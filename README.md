@@ -1,6 +1,6 @@
 # Free-GPT-Chat
 A simple Gradio web interface to interact with the new GPT-3.5-turbo api
-![image](https://user-images.githubusercontent.com/64171756/222860933-e5f6f6eb-56e4-4c8e-8b81-d3800067252d.png)
+![image](https://user-images.githubusercontent.com/64171756/222905972-37c26880-eca7-48af-92f6-1e5fa40b6bf9.png)
 
 # Requirements
 Requires openai, gradio, pygments and re
