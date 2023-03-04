@@ -33,8 +33,8 @@ def predict(input, history = []):
     chat_history.append([message, reply])
     return chat_history, history
 
-with gr.Blocks(css="#chatbot .overflow-y-auto{height:500px}") as freeGPT:
-    chatbot = gr.Chatbot(elem_id="chatbot")
+with gr.Blocks(css="#Free-GPT-3.5 .overflow-y-auto{height:500px}") as freeGPT:
+    chatbot = gr.Chatbot(elem_id="Free-GPT-3.5")
     state = gr.State([])
     
     with gr.Row():
