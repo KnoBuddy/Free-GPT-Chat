@@ -33,12 +33,12 @@ def predict(input, history = []):
     chat_history.append([message, reply])
     return chat_history, history
 
-with gr.Blocks() as freeGPT:
-    chatbot = gr.Chatbot()
+with gr.Blocks(css="#chatbot .overflow-y-auto{height:500px}") as freeGPT:
+    chatbot = gr.Chatbot(elem_id="chatbot")
     state = gr.State([])
     
     with gr.Row():
-        txt = gr.Textbox(show_label=False, placeholder="What kind of chatbot would you like to create? ").style(container=False)
+        txt = gr.Textbox(show_label=False, placeholder="Say hello to your new assistant, or ask it anything.").style(container=False)
     
     txt.submit(predict, [txt, state], [chatbot, state])
 
