@@ -1,11 +1,39 @@
 import openai
 import gradio as gr
 
+# Syntax highlighting for the code snippets
+import re
+from pygments import highlight
+from pygments.lexers import get_lexer_by_name
+from pygments.formatters import HtmlFormatter
+
 openai.api_key = "YOUR API KEY HERE"
 
 chat_history = []
 print("What kind of chatbot would you like to create?")
 system_msg = "What type of chatbot would you like to create? " + input()
+
+def highlight_code(code):
+    # find code matches in markdown ```(.*?)``` and ```\n(.*?)\n``` and ```\n(.*?)``` and ```(.*?)\n```
+    matches = re.findall(r"```(.*?)```", code, re.DOTALL)
+    matches += re.findall(r"```(.*?)\n```", code, re.DOTALL)
+    matches += re.findall(r"```\n(.*?)\n```", code, re.DOTALL)
+    matches += re.findall(r"```\n(.*?)```", code, re.DOTALL)
+    
+    # replace each match with highlighted html
+    for match in matches:
+        # detect language
+        lexer = get_lexer_by_name("python", stripall=True)
+        # highlight code
+        formatted_code = highlight(match, lexer, HtmlFormatter())
+        # replace code with highlighted html
+        code = code.replace("```" + match + "```", formatted_code)
+        code = code.replace("```" + match + "\n```", formatted_code)
+        code = code.replace("```\n" + match + "\n```", formatted_code)
+        code = code.replace("```\n" + match + "```", formatted_code)
+
+    return code
+
 
 def gpt_reply(chat_history):
     response = openai.ChatCompletion.create(
@@ -25,6 +53,7 @@ def predict(input, history = []):
     message = input
     history.append({"role": "user", "content": message})
     reply = gpt_reply(history)
+    reply = highlight_code(reply)
     history.append({"role": "assistant", "content": reply})
     # create new list with only the user and bot responses
     # Each response is a string of one item of a list 
@@ -33,8 +62,8 @@ def predict(input, history = []):
     chat_history.append([message, reply])
     return chat_history, history
 
-with gr.Blocks(css="#Free-GPT-3.5 .overflow-y-auto{height:500px}") as freeGPT:
-    chatbot = gr.Chatbot(elem_id="Free-GPT-3.5")
+with gr.Blocks(css="#chatbot .overflow-y-auto{height:700px!important}") as freeGPT:
+    chatbot = gr.Chatbot(elem_id="chatbot")
     state = gr.State([])
     
     with gr.Row():
