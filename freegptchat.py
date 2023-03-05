@@ -1,13 +1,13 @@
 import openai
 import gradio as gr
 
+openai.api_key = "YOUR API KEY HERE"
+
 # Syntax highlighting for the code snippets
 import re
 from pygments import highlight
 from pygments.lexers import get_lexer_by_name
 from pygments.formatters import HtmlFormatter
-
-openai.api_key = "YOUR API KEY HERE"
 
 chat_history = []
 print("What kind of chatbot would you like to create?")
